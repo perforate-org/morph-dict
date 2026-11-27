@@ -55,11 +55,10 @@ impl ConnectionMatrix {
             .map_err(|_| fault(DictionaryError::Overflow))?;
         let bytes = read_vec(image, 4, bytes_len)?;
         let costs = bytes
-            .chunks_exact(2)
-            .map(|pair| match pair {
-                [a, b] => i16::from_le_bytes([*a, *b]),
-                _ => UNCONNECTED,
-            })
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|pair| i16::from_le_bytes(*pair))
             .collect();
         Ok(Self {
             costs,
