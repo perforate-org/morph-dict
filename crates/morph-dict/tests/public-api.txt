@@ -41,6 +41,7 @@ pub morph_dict::ContainerError::UnsupportedVersion
 pub morph_dict::ContainerError::UnsupportedVersion::found: u8
 impl core::convert::From<morph_dict::ContainerError> for morph_dict::Error
 pub fn morph_dict::Error::from(morph_dict::ContainerError) -> Self
+impl core::error::Error for morph_dict::ContainerError
 impl core::fmt::Display for morph_dict::ContainerError
 pub fn morph_dict::ContainerError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 #[non_exhaustive] pub enum morph_dict::DictionaryError
@@ -56,6 +57,7 @@ pub morph_dict::DictionaryError::TooSmall::len: u64
 pub morph_dict::DictionaryError::Truncated
 pub morph_dict::DictionaryError::VersionMismatch
 pub morph_dict::DictionaryError::VersionMismatch::found: u32
+impl core::error::Error for morph_dict::DictionaryError
 impl core::fmt::Display for morph_dict::DictionaryError
 pub fn morph_dict::DictionaryError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 #[non_exhaustive] pub enum morph_dict::Error

@@ -249,6 +249,10 @@ impl fmt::Display for Error {
     }
 }
 
+impl core::error::Error for ContainerError {}
+
+impl core::error::Error for DictionaryError {}
+
 impl core::error::Error for Error {}
 
 #[cfg(test)]
