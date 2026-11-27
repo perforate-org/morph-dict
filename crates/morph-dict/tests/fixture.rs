@@ -211,7 +211,7 @@ fn char_bin(names: &[&str], rules: &[(u32, u32, u32)], members: &[(char, u32)]) 
 }
 
 /// A small Japanese dictionary: 走った, 走る, the particle は, nouns whose lemma column is
-/// another word (ネコ → 猫), `*` (猫) or empty (犬), a costly はa, an `ALPHA` unknown class
+/// another word (ネコ → 猫), `*` (猫) or empty (犬), a costly ab and はa, an `ALPHA` unknown class
 /// (a–z, invoked and grouped) and a `SYMBOL` one (`!?#`, invoked, up to two characters, not
 /// grouped).
 pub(crate) fn images() -> Vec<(&'static str, Vec<u8>)> {
@@ -257,6 +257,13 @@ pub(crate) fn images() -> Vec<(&'static str, Vec<u8>)> {
             right: 0,
             wcost: 300,
             feature: "名詞,一般,*,*,*,*,,イヌ,イヌ",
+        },
+        Entry {
+            key: "ab",
+            left: 1,
+            right: 0,
+            wcost: 9000,
+            feature: "名詞,一般,*,*,*,*,ab,エービー,エービー",
         },
         Entry {
             key: "はa",

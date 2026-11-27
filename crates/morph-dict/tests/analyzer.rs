@@ -99,8 +99,10 @@ fn unknown_words_follow_their_class_rules() {
     assert_eq!(surfaces("!?#"), ["!", "?#"]);
     // ALPHA groups: a run longer than its span limit is still one word.
     assert_eq!(surfaces("abcdefg"), ["abcdefg"]);
-    // An unknown word starting at 1 is kept though はa (from 0) ends where it does.
+    // An unknown word starting at 1 is kept though はa (from 0) ends where it does, and
+    // unknown words from 0 are kept though ab (also from 0) ends elsewhere.
     assert_eq!(surfaces("はa"), ["は", "a"]);
+    assert_eq!(surfaces("abc"), ["abc"]);
 }
 
 #[test]

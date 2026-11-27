@@ -130,11 +130,10 @@ impl CharDef {
             usize::try_from(table_bytes).map_err(|_| fault(DictionaryError::Overflow))?;
         let bytes = read_vec(image, names_end, table_len)?;
         let table = bytes
-            .chunks_exact(4)
-            .map(|word| match word {
-                [a, b, c, d] => u32::from_le_bytes([*a, *b, *c, *d]),
-                _ => 0,
-            })
+            .as_chunks::<4>()
+            .0
+            .iter()
+            .map(|word| u32::from_le_bytes(*word))
             .collect();
         Ok(Self { table })
     }

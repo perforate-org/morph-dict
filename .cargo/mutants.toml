@@ -2,4 +2,11 @@
 #
 # Kani harnesses run under `cargo kani`, not `cargo test`, so their mutants always survive the
 # test run; `Debug` output is diagnostics, not behaviour.
-exclude_re = ["proofs::", "<impl fmt::Debug for "]
+#
+# `attest` hashes in fixed chunks; `16 + 1024` is just another chunk size, and the digest of a
+# byte stream does not depend on how it is chunked.
+exclude_re = [
+    "proofs::",
+    "<impl fmt::Debug for ",
+    "replace \\* with \\+ in attest",
+]
