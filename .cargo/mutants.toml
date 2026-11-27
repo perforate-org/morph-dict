@@ -1,0 +1,5 @@
+# cargo-mutants: what a surviving mutant means here.
+#
+# Kani harnesses run under `cargo kani`, not `cargo test`, so their mutants always survive the
+# test run; `Debug` output is diagnostics, not behaviour.
+exclude_re = ["proofs::", "<impl fmt::Debug for "]

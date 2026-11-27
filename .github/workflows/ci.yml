@@ -1,0 +1,68 @@
+# The gate on every push and pull request, the real-dictionary test, and Kani's proofs.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  gate:
+    name: Gate (fmt, clippy, test, doc, deslop, smells)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy, rust-analyzer
+      # Rustdoc JSON for the public API snapshot needs the nightly `tests/public_api.rs` names.
+      - run: rustup toolchain install nightly-2026-10-26 --profile minimal
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+      - run: cargo install --locked deslop-please@0.1.4
+      - name: Install qlty
+        run: |
+          curl -fsSL https://qlty.sh | bash
+          echo "$HOME/.qlty/bin" >> "$GITHUB_PATH"
+      # The real mecab-ipadic for the smoke test.
+      - name: Fetch ipadic
+        run: just ipadic | tail -n 1 | sed 's/^export //' >> "$GITHUB_ENV"
+      - run: just gate
+      # The crate is `no_std` + `alloc`: it builds for a target without std.
+      - run: rustup target add thumbv7em-none-eabihf && cargo build -p morph-dict --target thumbv7em-none-eabihf
+
+  kani:
+    name: Kani proofs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: model-checking/kani-github-action@v1
+        with:
+          kani-version: "0.67.0"
+          args: -p morph-dict
+
+  mutants:
+    name: Mutation testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just,cargo-mutants
+      # Most of the analyzer's mutants are caught only by the real dictionary's golden file.
+      - name: Fetch ipadic
+        run: just ipadic | tail -n 1 | sed 's/^export //' >> "$GITHUB_ENV"
+      # Exit 3 is timeouts only: those mutants hung the suite, so the tests noticed them.
+      - run: cargo mutants -p morph-dict --test-tool cargo || [ $? -eq 3 ]

@@ -1,0 +1,34 @@
+[package]
+name = "morph-dict"
+version.workspace = true
+edition.workspace = true
+description = "MeCab-format morphological analysis over byte-image dictionaries read through offset accessors: double-array trie, connection matrix, character classes, unknown words and Viterbi."
+repository = "https://github.com/perforate-org/morph-dict"
+keywords = ["mecab", "morphological", "tokenizer", "japanese", "no-std"]
+categories = ["text-processing", "no-std"]
+license = "MIT OR Apache-2.0"
+rust-version = "1.88"
+readme = "../../README.md"
+autotests = false
+
+[lints]
+workspace = true
+
+[dependencies]
+sha2 = { version = "0.11", default-features = false }
+unicode-normalization = { version = "0.1", default-features = false }
+
+[dev-dependencies]
+expect-test = "1.5"
+proptest = "1"
+public-api = "0.52"
+rustdoc-json = "0.9"
+
+[[test]]
+name = "analyzer"
+
+[[test]]
+name = "ipadic"
+
+[[test]]
+name = "public_api"

@@ -1,0 +1,12 @@
+# Rust
+target/
+Cargo.lock
+
+# OS
+.DS_Store
+
+# Real dictionaries for the parity tests (see README): fetched, never committed.
+crates/morph-dict/tests/dict/
+
+# cargo-mutants output
+mutants.out*/

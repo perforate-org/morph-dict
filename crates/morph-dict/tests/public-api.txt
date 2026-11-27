@@ -1,0 +1,141 @@
+pub mod morph_dict
+pub mod morph_dict::container
+pub struct morph_dict::container::ContainerEntry
+impl morph_dict::container::ContainerEntry
+pub const fn morph_dict::container::ContainerEntry::is_empty(&self) -> bool
+pub const fn morph_dict::container::ContainerEntry::len(&self) -> u64
+pub fn morph_dict::container::ContainerEntry::name(&self) -> &str
+pub const fn morph_dict::container::ContainerEntry::offset(&self) -> u64
+pub const fn morph_dict::container::ContainerEntry::sha256(&self) -> &[u8; 32]
+pub const morph_dict::container::LAYOUT_VERSION: u8
+pub const morph_dict::container::MAGIC: &[u8; 3]
+pub fn morph_dict::container::attest(&dyn morph_dict::ByteImage, &morph_dict::container::ContainerEntry) -> core::result::Result<[u8; 32], morph_dict::Error>
+pub fn morph_dict::container::build<N: core::convert::AsRef<str>, B: core::convert::AsRef<[u8]>>(&[(N, B)]) -> core::result::Result<alloc::vec::Vec<u8>, morph_dict::ContainerError>
+pub fn morph_dict::container::validate(&dyn morph_dict::ByteImage) -> core::result::Result<alloc::vec::Vec<morph_dict::container::ContainerEntry>, morph_dict::Error>
+pub mod morph_dict::normalize
+pub fn morph_dict::normalize::fold_unit(&mut alloc::string::String)
+pub fn morph_dict::normalize::fold_units(&mut [alloc::string::String])
+pub const fn morph_dict::normalize::is_variation_selector(char) -> bool
+pub fn morph_dict::normalize::prepass(&str) -> alloc::string::String
+#[non_exhaustive] pub enum morph_dict::ContainerError
+pub morph_dict::ContainerError::BadMagic
+pub morph_dict::ContainerError::DuplicateName
+pub morph_dict::ContainerError::DuplicateName::name: alloc::string::String
+pub morph_dict::ContainerError::EntryOutOfRange
+pub morph_dict::ContainerError::EntryOutOfRange::name: alloc::string::String
+pub morph_dict::ContainerError::Missing
+pub morph_dict::ContainerError::Missing::name: &'static str
+pub morph_dict::ContainerError::NameLength
+pub morph_dict::ContainerError::NameLength::len: usize
+pub morph_dict::ContainerError::NameNotUtf8
+pub morph_dict::ContainerError::Overlap
+pub morph_dict::ContainerError::Overlap::first: alloc::string::String
+pub morph_dict::ContainerError::Overlap::second: alloc::string::String
+pub morph_dict::ContainerError::TooLarge
+pub morph_dict::ContainerError::TooManyEntries
+pub morph_dict::ContainerError::TooManyEntries::count: u32
+pub morph_dict::ContainerError::TooSmall
+pub morph_dict::ContainerError::TooSmall::len: u64
+pub morph_dict::ContainerError::Truncated
+pub morph_dict::ContainerError::UnsupportedVersion
+pub morph_dict::ContainerError::UnsupportedVersion::found: u8
+impl core::convert::From<morph_dict::ContainerError> for morph_dict::Error
+pub fn morph_dict::Error::from(morph_dict::ContainerError) -> Self
+impl core::fmt::Display for morph_dict::ContainerError
+pub fn morph_dict::ContainerError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+#[non_exhaustive] pub enum morph_dict::DictionaryError
+pub morph_dict::DictionaryError::MagicMismatch
+pub morph_dict::DictionaryError::NotUnknownDictionary
+pub morph_dict::DictionaryError::NotUnknownDictionary::dict_type: u32
+pub morph_dict::DictionaryError::Overflow
+pub morph_dict::DictionaryError::SizeMismatch
+pub morph_dict::DictionaryError::SizeMismatch::expected: u64
+pub morph_dict::DictionaryError::SizeMismatch::found: u64
+pub morph_dict::DictionaryError::TooSmall
+pub morph_dict::DictionaryError::TooSmall::len: u64
+pub morph_dict::DictionaryError::Truncated
+pub morph_dict::DictionaryError::VersionMismatch
+pub morph_dict::DictionaryError::VersionMismatch::found: u32
+impl core::fmt::Display for morph_dict::DictionaryError
+pub fn morph_dict::DictionaryError::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+#[non_exhaustive] pub enum morph_dict::Error
+pub morph_dict::Error::Container(morph_dict::ContainerError)
+pub morph_dict::Error::Dictionary
+pub morph_dict::Error::Dictionary::error: morph_dict::DictionaryError
+pub morph_dict::Error::Dictionary::image: morph_dict::ImageKind
+pub morph_dict::Error::LineTooLong
+pub morph_dict::Error::LineTooLong::len: usize
+pub morph_dict::Error::LineTooLong::max: usize
+pub morph_dict::Error::OutOfBounds(morph_dict::OutOfBounds)
+impl core::convert::From<morph_dict::ContainerError> for morph_dict::Error
+pub fn morph_dict::Error::from(morph_dict::ContainerError) -> Self
+impl core::convert::From<morph_dict::OutOfBounds> for morph_dict::Error
+pub fn morph_dict::Error::from(morph_dict::OutOfBounds) -> Self
+impl core::error::Error for morph_dict::Error
+impl core::fmt::Display for morph_dict::Error
+pub fn morph_dict::Error::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+#[non_exhaustive] pub enum morph_dict::ImageKind
+pub morph_dict::ImageKind::CharBin
+pub morph_dict::ImageKind::Matrix
+pub morph_dict::ImageKind::SysDic
+pub morph_dict::ImageKind::UnkDic
+impl morph_dict::ImageKind
+pub const morph_dict::ImageKind::ALL: [Self; 4]
+pub const fn morph_dict::ImageKind::file_name(self) -> &'static str
+impl core::fmt::Display for morph_dict::ImageKind
+pub fn morph_dict::ImageKind::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub struct morph_dict::Analyzer
+impl morph_dict::Analyzer
+pub fn morph_dict::Analyzer::analyze(&self, &str) -> core::result::Result<alloc::vec::Vec<alloc::string::String>, morph_dict::Error>
+pub fn morph_dict::Analyzer::morphemes(&self, &str) -> core::result::Result<alloc::vec::Vec<morph_dict::Morpheme>, morph_dict::Error>
+pub fn morph_dict::Analyzer::open(&alloc::rcs::arc::Arc<dyn morph_dict::ByteImage>, morph_dict::DictionaryProfile) -> core::result::Result<Self, morph_dict::Error>
+pub const fn morph_dict::Analyzer::profile(&self) -> &morph_dict::DictionaryProfile
+pub fn morph_dict::Analyzer::validate_container(&dyn morph_dict::ByteImage) -> core::result::Result<alloc::vec::Vec<morph_dict::container::ContainerEntry>, morph_dict::Error>
+impl core::fmt::Debug for morph_dict::Analyzer
+pub fn morph_dict::Analyzer::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub struct morph_dict::DictionaryProfile
+impl morph_dict::DictionaryProfile
+pub fn morph_dict::DictionaryProfile::drops(&self, &str) -> bool
+pub fn morph_dict::DictionaryProfile::japanese_ipadic() -> Self
+pub fn morph_dict::DictionaryProfile::korean_mecab_ko_dic() -> Self
+pub const fn morph_dict::DictionaryProfile::lemma_column(&self) -> core::option::Option<usize>
+pub const fn morph_dict::DictionaryProfile::max_line_bytes(&self) -> usize
+pub const fn morph_dict::DictionaryProfile::max_lookup_bytes(&self) -> usize
+pub const fn morph_dict::DictionaryProfile::unk_max_group_bytes(&self) -> usize
+pub const fn morph_dict::DictionaryProfile::with_max_line_bytes(self, usize) -> Self
+pub struct morph_dict::HeapImage(_)
+impl morph_dict::HeapImage
+pub const fn morph_dict::HeapImage::as_slice(&self) -> &[u8]
+pub fn morph_dict::HeapImage::from_vec(alloc::vec::Vec<u8>) -> Self
+impl core::fmt::Debug for morph_dict::HeapImage
+pub fn morph_dict::HeapImage::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl morph_dict::ByteImage for morph_dict::HeapImage
+pub fn morph_dict::HeapImage::as_contiguous(&self) -> core::option::Option<&[u8]>
+pub fn morph_dict::HeapImage::is_empty(&self) -> bool
+pub fn morph_dict::HeapImage::len(&self) -> u64
+pub fn morph_dict::HeapImage::read_exact_at(&self, u64, &mut [u8]) -> core::result::Result<(), morph_dict::OutOfBounds>
+pub struct morph_dict::Morpheme
+impl morph_dict::Morpheme
+pub fn morph_dict::Morpheme::feature(&self) -> &str
+pub fn morph_dict::Morpheme::surface(&self) -> &str
+pub struct morph_dict::OutOfBounds
+impl morph_dict::OutOfBounds
+pub const fn morph_dict::OutOfBounds::image_len(&self) -> u64
+pub const fn morph_dict::OutOfBounds::new(u64, usize, u64) -> Self
+pub const fn morph_dict::OutOfBounds::offset(&self) -> u64
+pub const fn morph_dict::OutOfBounds::read_len(&self) -> usize
+impl core::convert::From<morph_dict::OutOfBounds> for morph_dict::Error
+pub fn morph_dict::Error::from(morph_dict::OutOfBounds) -> Self
+impl core::error::Error for morph_dict::OutOfBounds
+impl core::fmt::Display for morph_dict::OutOfBounds
+pub fn morph_dict::OutOfBounds::fmt(&self, &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub trait morph_dict::ByteImage: core::marker::Send + core::marker::Sync
+pub fn morph_dict::ByteImage::as_contiguous(&self) -> core::option::Option<&[u8]>
+pub fn morph_dict::ByteImage::is_empty(&self) -> bool
+pub fn morph_dict::ByteImage::len(&self) -> u64
+pub fn morph_dict::ByteImage::read_exact_at(&self, u64, &mut [u8]) -> core::result::Result<(), morph_dict::OutOfBounds>
+impl morph_dict::ByteImage for morph_dict::HeapImage
+pub fn morph_dict::HeapImage::as_contiguous(&self) -> core::option::Option<&[u8]>
+pub fn morph_dict::HeapImage::is_empty(&self) -> bool
+pub fn morph_dict::HeapImage::len(&self) -> u64
+pub fn morph_dict::HeapImage::read_exact_at(&self, u64, &mut [u8]) -> core::result::Result<(), morph_dict::OutOfBounds>
