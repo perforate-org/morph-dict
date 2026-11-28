@@ -32,6 +32,17 @@ use unicode_normalization::UnicodeNormalization;
 /// text is one scan (no reallocation).
 #[must_use]
 pub fn prepass(text: &str) -> String {
+    // ASCII is NFKC-stable, lowercases within ASCII and holds no variation selector, so the
+    // pipeline reduces to an ASCII lowercase: one pass instead of the NFKC decomposition and
+    // recomposition tables.
+    if text.is_ascii() {
+        return text.to_ascii_lowercase();
+    }
+    prepass_unicode(text)
+}
+
+/// [`prepass`] through the full pipeline, whatever the text.
+fn prepass_unicode(text: &str) -> String {
     let normalized = text.nfkc().collect::<String>().to_lowercase();
     if normalized.chars().any(is_variation_selector) {
         normalized
@@ -80,6 +91,14 @@ mod tests {
     use super::*;
     use alloc::borrow::ToOwned;
     use alloc::vec;
+
+    proptest::proptest! {
+        /// The ASCII shortcut is the full pipeline's answer on every ASCII text.
+        #[test]
+        fn ascii_prepass_equals_the_full_pipeline(text in "[\\x00-\\x7F]{0,64}") {
+            proptest::prop_assert_eq!(prepass(&text), prepass_unicode(&text));
+        }
+    }
 
     // -- prepass: NFKC + lowercase parity with the former duplicated copies -------------------
 
